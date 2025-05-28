@@ -15,7 +15,7 @@ module Jets::Api
       begin
         resp = http.request(req) # send request
         raw_response ? resp : load_json(url, resp)
-      rescue SocketError, OpenURI::HTTPError, OpenSSL::SSL::SSLError, Errno::ECONNREFUSED => e
+      rescue SocketError, Net::OpenTimeout, OpenURI::HTTPError, OpenSSL::SSL::SSLError, Errno::ECONNREFUSED => e
         @retries += 1
         if @retries <= @@max_retries
           delay = 2**@retries
